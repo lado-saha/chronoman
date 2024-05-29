@@ -7,7 +7,7 @@ package com.minsih.chronoman.model;
  */
 import lombok.Data;
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Date;
 
 @Data
@@ -39,11 +39,11 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   private Date lastLogin;
 
-  // Hash password before saving to the database
-  public void setPassword(String password) {
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    this.password = passwordEncoder.encode(password);
-  }
+  // // Hash password before saving to the database
+  // public void setPassword(String password) {
+  //   BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  //   this.password = passwordEncoder.encode(password);
+  // }
 
   // Constructors, getters, and setters
 }
