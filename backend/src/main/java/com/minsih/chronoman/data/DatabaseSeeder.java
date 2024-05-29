@@ -1,23 +1,22 @@
 package com.minsih.chronoman.data;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component;
 
 import com.minsih.chronoman.model.PredefinedActivity;
 import com.minsih.chronoman.model.PredefinedTask;
+import com.minsih.chronoman.repository.LocationRepository;
 import com.minsih.chronoman.repository.PredefinedActivityRepository;
 import com.minsih.chronoman.repository.PredefinedTaskRepository;
 
-@Component
+// @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final PredefinedActivityRepository predefinedActivityRepository;
     private final PredefinedTaskRepository predefinedTaskRepository;
 
-    @Autowired
     public DatabaseSeeder(PredefinedActivityRepository predefinedActivityRepository,
-            PredefinedTaskRepository predefinedTaskRepository) {
+            PredefinedTaskRepository predefinedTaskRepository, LocationRepository locationRepository) {
         this.predefinedActivityRepository = predefinedActivityRepository;
         this.predefinedTaskRepository = predefinedTaskRepository;
     }
@@ -50,6 +49,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private void seedPredefinedTasks() {
+
         String[][] tasks = {
                 // Tasks for "Préparation du site"
                 { "Délimitation du chantier", "Défrichage et débroussaillage", "Démolition des structures existantes",
@@ -86,4 +86,5 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
         }
     }
+
 }

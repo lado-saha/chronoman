@@ -31,9 +31,6 @@ public class Location {
   private Double longitude;
 
   @Column(nullable = false, length = 255)
-  private String region;
-
-  @Column(nullable = false, length = 255)
   private String town;
 
   @Column(nullable = false, length = 255)
