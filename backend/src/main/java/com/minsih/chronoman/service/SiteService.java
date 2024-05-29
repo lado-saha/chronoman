@@ -11,4 +11,6 @@ public interface SiteService {
   Site save(Site site);
 
   void deleteById(Long id);
+
+  List<Site> findByProjectId(Long projectId);
 }

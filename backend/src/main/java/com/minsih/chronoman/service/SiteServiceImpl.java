@@ -33,4 +33,9 @@ public class SiteServiceImpl implements SiteService {
     public void deleteById(Long id) {
         siteRepository.deleteById(id);
     }
+
+    @Override
+    public List<Site> findByProjectId(Long projectId) {
+        return siteRepository.findByProjectId(projectId);
+    }
 }
