@@ -4,11 +4,13 @@ import java.util.List;
 import com.minsih.chronoman.model.User;
 
 public interface UserService {
-    User findById(Long id);
-    
+    User findById(String id);
+
+    User findByEmail(String email);
+
     List<User> findAll();
-    
+
     User save(User user);
-    
-    void deleteById(Long id);
+
+    void deleteById(String id);
 }

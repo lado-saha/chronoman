@@ -11,6 +11,9 @@ import lombok.Data;
 import jakarta.persistence.*;
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Data
 @Entity
 @Table(name = "tasks")
@@ -42,12 +45,12 @@ public class Task {
 
   private Date realEndDate;
 
-  @Column(nullable = false, updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
+  @CreationTimestamp
   private Date createdAt;
 
-  @Column(nullable = false)
   @Temporal(TemporalType.TIMESTAMP)
+  @UpdateTimestamp
   private Date updatedAt;
 
   // Constructors, getters, and setters

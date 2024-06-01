@@ -553,15 +553,5 @@ INSERT INTO `tasks` (`id`, `comment`, `created_at`, `duration`, `real_end_date`,
 # TABLE STRUCTURE FOR: users
 #
 
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('1', '2010-10-07 09:59:36.000000', NULL, 'Modesto Crooks', '7988dc161e89acf122cdb9ba6afa519eac9ec687', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('2', '2010-10-07 09:59:36.000000', NULL, 'Amya Gorczany DVM', '88a61e6323988d02b71cda70e4d4e21a87c735ff', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('3', '2010-10-07 09:59:36.000000', NULL, 'Ned Kuhic', '28e3933759890c453ee39b8040a992bc7ed04fb0', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('4', '2010-10-07 09:59:36.000000', NULL, 'Dr. Eve Schumm', '878e39b8824a98520380804f48271f640bb6a2b7', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('5', '2010-10-07 09:59:36.000000', NULL, 'Neil Quigley', '9d234e590820e6ec049f5cdf249e9f579f2680b7', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('6', '2010-10-07 09:59:36.000000', NULL, 'Ramon Turcotte', '1dcc19f20bf2bbd126d3a54a71c6442530ac1fff', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('7', '2010-10-07 09:59:36.000000', NULL, 'Lucile Roberts DDS', '43aa01af6b4e9fe30f132d24ef11040b386ce3e8', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('8', '2010-10-07 09:59:36.000000', NULL, 'Adah Hoppe', '81864d447c5b90d4ca01de2e9ef5b972b62064d1', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('9', '2010-10-07 09:59:36.000000', NULL, 'Prof. Kamille McKenzie', '3fee158a9fe8ffcd4d54a43df343b57bcab8d4e7', '', '2010-10-07 09:59:36.000000');
-INSERT INTO `users` (`id`, `created_at`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('10', '2010-10-07 09:59:36.000000', NULL, 'Mr. Terence Pacocha III', '1df996a21af7821d50cc269c3a042f77c9e44f56', '', '2010-10-07 09:59:36.000000');
-
-
+INSERT INTO `users` (`id`, `created_at`,`email`, `last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('e02ec477-d191-4a21-81f9-012257d79edd', '2010-10-07 09:59:36.000000','gros@gmail.com', NULL, 'Modesto Crooks', '$2a$12$xBE2ro.We3DQSAzJw9SBI.BoJqGzUoOfVjd4TI5J7piV1eeCH2gO2', '', '2010-10-07 09:59:36.000000');
+INSERT INTO `users` (`id`, `created_at`, `email`,`last_login`, `name`, `password`, `role`, `updated_at`) VALUES ('b2dafea2-b8c7-42d4-b22c-05ed3045eb21', '2010-10-07 09:59:36.000000', 'karam@enspy.com',NULL, 'Amya Gorczany DVM', '$2a$12$o3GFHTghBo20zegdld3y1ei.IkLybiktD0gw9P1hyUkrWv8PJRxSW', '', '2010-10-07 09:59:36.000000');

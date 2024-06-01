@@ -12,6 +12,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Data
 @Entity
 @Table(name = "locations")
@@ -36,11 +39,11 @@ public class Location {
   @Column(nullable = false, length = 255)
   private String country;
 
-  @Column(nullable = false, updatable = false)
+  @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;
 
-  @Column(nullable = false)
+  @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
 

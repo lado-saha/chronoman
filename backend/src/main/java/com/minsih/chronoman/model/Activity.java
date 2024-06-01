@@ -9,6 +9,10 @@ package com.minsih.chronoman.model;
  */
 import lombok.Data;
 import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.*;;
 
 @Data
@@ -42,13 +46,16 @@ public class Activity {
 
   private Date realEndDate;
 
-  @Column(nullable = false, updatable = false)
+ 
+  @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;
 
-  @Column(nullable = false)
+  @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
+
+
 
   // Constructors, getters, and setters
 }

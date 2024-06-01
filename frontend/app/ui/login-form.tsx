@@ -5,20 +5,23 @@ import {
   AtSymbolIcon,
   KeyIcon,
   ExclamationCircleIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { ArrowRightIcon, UserPlusIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/app/ui/button';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/lib/actions';
+import { signinUser } from '@/app/lib/actions';
+import clsx from 'clsx';
+import Link from 'next/link';
 
 export default function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useFormState(signinUser, undefined);
 
   return (
     <form action={dispatch} className="space-y-3">
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-        <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Please log in to continue.
+      <div className="flex-1 rounded-lg bg-gray-50 px-4 pb-4 pt-8">
+        <h1 className={`${lusitana.className} mb-3 text-2xl text-center`}>
+          Welcome! Please log in to continue.
         </h1>
         <div className="w-full">
           <div>
@@ -62,6 +65,7 @@ export default function LoginForm() {
           </div>
         </div>
         <LoginButton />
+        <SignupButton />
         <div
           className="flex h-8 items-end space-x-1"
           aria-live="polite"
@@ -81,10 +85,24 @@ export default function LoginForm() {
 
 function LoginButton() {
   const { pending } = useFormStatus();
-
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
-      Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      Log in <ArrowRightOnRectangleIcon className="ml-auto h-5 w-5" />
     </Button>
+  );
+}
+
+function SignupButton() {
+  return (
+    <Link
+      key="signup"
+      href="/signup"
+      className={clsx(
+        'mt-2 flex h-[48px] grow items-center  justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium text-blue-600 hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 ',
+      )}
+    >
+      <p className="w-full md:block">Create a new account instead.</p>
+      <UserPlusIcon className="w-6" />
+    </Link>
   );
 }

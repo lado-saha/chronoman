@@ -1,6 +1,5 @@
 package com.minsih.chronoman.model;
 
-
 /**
  * Represents a construction site in the construction management system.
  * Each site belongs to a project and is located at a specific location.
@@ -10,6 +9,9 @@ package com.minsih.chronoman.model;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
@@ -40,12 +42,12 @@ public class Site {
   @Column(nullable = false, length = 50)
   private String status;
 
-  @Column(nullable = false, updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
+  @CreationTimestamp
   private Date createdAt;
 
-  @Column(nullable = false)
   @Temporal(TemporalType.TIMESTAMP)
+  @UpdateTimestamp
   private Date updatedAt;
 
   // Constructors, getters, and setters
