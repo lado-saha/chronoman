@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 import bcrypt from 'bcryptjs';
-import { User } from './models';
+import { Project, User } from './models';
 
 const BASE_URL = process.env.API_BASE_URL;
 // We create a form schema taking into accoun the possible errors and warning
@@ -44,11 +44,26 @@ const UserCreationFormSchema = z.object({
     message: 'Please enter a valid email address.',
   }),
 });
-const CreateUser = UserCreationFormSchema.omit({ id: true });
 
-// We crerate a data validator where we omit
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+const ProjectFormSchema = z.object({
+  name: z.string().max(255, 'Name must be at most 255 characters long.'),
+  description: z.string().optional(), // TEXT can be optional or empty
+  startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: 'Invalid start date format. Use a valid date string.',
+  }),
+  budget: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an amount greater than $0.' })
+    .optional(),
+  duration: z.coerce
+    .number()
+    .gte(1, { message: 'Please enter a duration greater than 1.' }),
+  status: z.string().max(50, 'Status must be at most 50 characters long.'),
+  stakeholders: z
+    .string()
+    .max(255, 'Stakeholders must be at most 255 characters long.'),
+});
+
 // This is temporary until @types/react-dom is updated
 export type State = {
   errors?: {
@@ -58,6 +73,7 @@ export type State = {
   };
   message?: string | null;
 };
+
 export type UserState = {
   errors?: {
     name?: string[];
@@ -68,6 +84,25 @@ export type UserState = {
   };
   message?: string | null;
 };
+
+export type ProjectState = {
+  errors?: {
+    name?: string[];
+    id?: string[];
+    startDate?: string[];
+    duration?: string[];
+    status?: string[];
+    email?: string[];
+    stakeholders?: string[];
+  };
+  message?: string | null;
+};
+
+// Validators
+const CreateUser = UserCreationFormSchema.omit({ id: true });
+const CreateProject = ProjectFormSchema;
+const CreateInvoice = FormSchema.omit({ id: true, date: true });
+const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 /**
  * Notice that formData is passed automatically by setting this to the action attribute of a form
@@ -231,4 +266,116 @@ export async function signupUser(prevState: UserState, formData: FormData) {
   revalidatePath('/signup');
   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
   redirect('/login');
+}
+
+export async function createProject(
+  prevState: ProjectState,
+  formData: FormData,
+) {
+  // We create the user the we navigate to the login
+  const validatedFields = ProjectFormSchema.safeParse({
+    name: formData.get('name'),
+    description: formData.get('description'),
+    startDate: formData.get('startDate'),
+    duration: formData.get('duration'),
+    status: formData.get('status'),
+    budget: formData.get('budget'),
+    stakeholders: formData.get('stakeholders'),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Project.',
+    };
+  }
+
+  const project: Project = {
+    id: 0, // or a proper id if available
+    ...validatedFields.data,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  console.log(project);
+
+  try {
+    const response = await fetch(`${BASE_URL}/projects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(project),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create project');
+    }
+
+    const createdProject = await response.json();
+    console.log(`project created:${createdProject} `);
+  } catch (error) {
+    console.error(error);
+    return { message: 'Error creating project' };
+  }
+  revalidatePath('/dashboard/projects');
+  // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
+  redirect('/dashboard/projects');
+}
+export async function updateProject(
+  id: number,
+  prevState: ProjectState,
+  formData: FormData,
+) {
+  // We create the user the we navigate to the login
+  const validatedFields = ProjectFormSchema.safeParse({
+    name: formData.get('name'),
+    description: formData.get('description'),
+    startDate: formData.get('startDate'),
+    duration: formData.get('duration'),
+    status: formData.get('status'),
+    budget: formData.get('budget'),
+    stakeholders: formData.get('stakeholders'),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create user.',
+    };
+  }
+
+  const project: Project = {
+    id: 0, // or a proper id if available
+    ...validatedFields.data,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  console.log(project);
+
+  try {
+    const response = await fetch(`${BASE_URL}/projects/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(project),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update project');
+    }
+
+    const createdProject = await response.json();
+    console.log(`project updated:${createdProject} `);
+  } catch (error) {
+    console.error(error);
+    return { message: 'Error updating project' };
+  }
+  revalidatePath('/dashboard/projects');
+  // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
+  redirect('/dashboard/projects');
 }

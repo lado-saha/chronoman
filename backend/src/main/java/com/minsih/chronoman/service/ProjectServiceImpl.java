@@ -1,11 +1,13 @@
 package com.minsih.chronoman.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.minsih.chronoman.model.Project;
 import com.minsih.chronoman.repository.ProjectRepository;
-
-import java.util.List;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -22,8 +24,13 @@ public class ProjectServiceImpl implements ProjectService {
   }
 
   @Override
-  public List<Project> findAll() {
-    return projectRepository.findAll();
+  public Page<Project> findByName(String name, Pageable pageable) {
+    return projectRepository.findByNameIgnoreCase(name, pageable);
+  }
+
+  @Override
+  public Page<Project> findAll(Pageable pageable) {
+    return projectRepository.findAll(pageable);
   }
 
   @Override
@@ -34,5 +41,10 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public void deleteById(Long id) {
     projectRepository.deleteById(id);
+  }
+
+  @Override
+  public Long count() {
+    return projectRepository.count();
   }
 }

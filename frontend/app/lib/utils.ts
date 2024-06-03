@@ -1,16 +1,21 @@
 import { Revenue } from './definitions';
 
-export const formatCurrency = (amount: number) => {
-  return (amount / 100).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
+export const formatCurrency = (amount: number | undefined) => {
+  return amount == undefined
+    ? '-'
+    : (amount / 100)
+        .toLocaleString('fr-CM', {
+          style: 'currency',
+          currency: 'XAF',
+        })
+        .replace('XAF', 'FCFA');
 };
 
 export const formatDateToLocal = (
-  dateStr: string,
-  locale: string = 'en-US',
+  dateStr: string | undefined,
+  locale: string = 'en-CM', // Set locale to fr-CM for Cameroon
 ) => {
+  if (dateStr == undefined) return '-';
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',

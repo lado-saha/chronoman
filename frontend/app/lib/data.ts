@@ -12,6 +12,99 @@ import {
 import { formatCurrency } from './utils';
 // Use this to avoid caching and thus enable dynamic rendering
 import { unstable_noStore as noStore } from 'next/cache';
+import { Project } from './models';
+
+const BASE_URL = process.env.API_BASE_URL;
+
+export async function fetchProjects() {
+  const response = await fetch(`${BASE_URL}/projects`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  try {
+    if (!response.ok) {
+      throw new Error('Failed to fetch projects.' + response.statusText);
+    }
+
+    const projects: Project[] = await response.json();
+    return projects;
+  } catch (error) {
+    throw new Error(`Failed to fetch project`);
+  }
+}
+
+export async function fetchProjectById(id: number) {
+  try {
+    const response = await fetch(`${BASE_URL}/projects/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch project.');
+    }
+
+    const project: Project = await response.json();
+    return project;
+  } catch (error) {
+    throw new Error(`Failed to fetch project: ${error}`);
+  }
+}
+
+export async function fetchFilteredProjects(
+  query: string,
+  currentPage: number,
+) {
+  const size = ITEMS_PER_PAGE;
+  const response = await fetch(
+    `${BASE_URL}/projects?name=${query}&page=${currentPage}&size=${size}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    },
+  );
+
+  if (!response.ok) {
+    console.log('Failed' + response.status);
+    // throw new Error('Failed to fetch project. {}' + response.json());
+  }
+
+  const projects: Project[] = await response.json();
+  console.log(projects);
+  return projects;
+}
+
+export async function fetchProjectsPages(query: string) {
+  const response = await fetch(`${BASE_URL}/projects/count`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    console.log(response.statusText);
+    throw new Error(
+      `Failed to fetch total number of pages.${response.statusText}`,
+    );
+  }
+
+  return response.json().then((data) => {
+    const totalPages = Math.ceil(data / ITEMS_PER_PAGE);
+    return totalPages;
+  });
+}
 
 export async function fetchRevenue() {
   noStore();
@@ -93,7 +186,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,

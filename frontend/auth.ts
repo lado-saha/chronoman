@@ -20,7 +20,6 @@ async function getUser(email: string): Promise<User | undefined> {
     const user: User = await response.json();
     return user;
   } catch (error) {
-    console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
   }
 }

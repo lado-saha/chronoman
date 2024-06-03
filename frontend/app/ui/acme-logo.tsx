@@ -7,7 +7,7 @@ export default function AcmeLogo() {
       className={`${lusitana.className} flex flex-row items-center leading-none text-white`}
     >
       <CalendarDaysIcon className="h-12 w-12 rotate-[15deg]" />
-      <p className="ml-2 text-[44px]">Chronoman</p>
+      <p className="ml-2 text-[32px]">Chronoman</p>
     </div>
   );
 }

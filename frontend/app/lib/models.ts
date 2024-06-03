@@ -6,7 +6,7 @@ export type Project = {
   name: string;
   description?: string;
   startDate: string; // Use string for dates to easily parse them with Date constructor
-  endDate?: string;
+  duration: number,
   status: string;
   budget?: number;
   stakeholders?: string;
@@ -94,4 +94,22 @@ export type User = {
   updatedAt?: string;
   lastLogin?: string;
 };
-;
+
+export enum StatusModel {
+  Planned = 'Planned',
+  Ongoing = 'Ongoing',
+  Completed = 'Completed',
+}
+
+export function toStatusModel(status: string): StatusModel {
+  switch (status.toLowerCase()) {
+    case 'planned':
+      return StatusModel.Planned;
+    case 'ongoing':
+      return StatusModel.Ongoing;
+    case 'completed':
+      return StatusModel.Completed;
+    default:
+      throw new Error(`Unknown status: ${status}`);
+  }
+}

@@ -31,7 +31,8 @@ public class Project {
   @Column(nullable = false)
   private Date startDate;
 
-  private Date endDate;
+  @Column(nullable = false)
+  private Long duration;
 
   @Column(nullable = false, length = 50)
   private String status;
