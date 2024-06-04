@@ -14,6 +14,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import java.util.*;;
 
 @Data
 @Entity
@@ -65,4 +66,5 @@ public class Site {
   @Column(nullable = true)
   private String description;
   // Constructors, getters, and setters
+
 }

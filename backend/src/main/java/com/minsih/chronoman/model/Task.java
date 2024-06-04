@@ -1,6 +1,5 @@
 package com.minsih.chronoman.model;
 
-
 /**
  * Represents a task in the construction management system.
  * Each task is associated with an activity and a predefined task.
@@ -10,8 +9,9 @@ package com.minsih.chronoman.model;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.Date;
-
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
@@ -19,12 +19,26 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "tasks")
 public class Task {
 
+  public Task() {
+  }
+
+  public Task(Activity activity, PredefinedTask predefinedTask, String status, int duration, String comment,
+      Date realEndDate) {
+    this.activity = activity;
+    this.predefinedTask = predefinedTask;
+    this.status = status;
+    this.duration = duration;
+    this.comment = comment;
+    this.realEndDate = realEndDate;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
   @JoinColumn(name = "activity_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Activity activity;
 
   @ManyToOne
@@ -40,9 +54,8 @@ public class Task {
   @Column(columnDefinition = "TEXT")
   private String comment;
 
-  @Column(nullable = false)
-  private Date startDate;
-
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(nullable = true)
   private Date realEndDate;
 
   @Temporal(TemporalType.TIMESTAMP)

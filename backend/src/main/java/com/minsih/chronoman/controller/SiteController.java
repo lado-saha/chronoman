@@ -63,7 +63,6 @@ public class SiteController {
 
     @PostMapping
     public ResponseEntity<Site> createSite(@RequestBody Site site) {
-        System.out.println(site);
         Site createdSite = siteService.save(site);
         System.out.println(createdSite);
 

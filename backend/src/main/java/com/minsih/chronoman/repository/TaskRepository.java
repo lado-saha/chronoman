@@ -9,4 +9,5 @@ import com.minsih.chronoman.model.Task;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     // You can define custom query methods here if needed
     List<Task> findByActivityId(Long activityId);
+
 }

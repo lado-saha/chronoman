@@ -1,6 +1,5 @@
 package com.minsih.chronoman.model;
 
-
 /**
  * Represents an activity in the construction management system.
  * Each activity is associated with a predefined activity and a construction site.
@@ -11,8 +10,9 @@ import lombok.Data;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.*;;
 
 @Data
@@ -30,6 +30,7 @@ public class Activity {
 
   @ManyToOne
   @JoinColumn(name = "site_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Site site;
 
   @Column(nullable = false, length = 50)
@@ -41,9 +42,8 @@ public class Activity {
   @Column(columnDefinition = "TEXT")
   private String comment;
 
-  @Column(nullable = false)
-  private Date startDate;
-
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
   private Date realEndDate;
 
   @CreationTimestamp
@@ -54,7 +54,16 @@ public class Activity {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
 
+  public Activity() {
+  }
 
-
+  public Activity(PredefinedActivity predefinedActivity, Site site, String status, int duration,
+      String comment) {
+    this.predefinedActivity = predefinedActivity;
+    this.site = site;
+    this.status = status;
+    this.duration = duration;
+    this.comment = comment;
+  }
   // Constructors, getters, and setters
 }

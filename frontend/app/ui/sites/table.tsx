@@ -1,4 +1,8 @@
-import { UpdateSite, DeleteSite, ConsultSitesActivities } from '@/app/ui/sites/buttons';
+import {
+  UpdateSite,
+  DeleteSite,
+  ConsultSitesActivities,
+} from '@/app/ui/sites/buttons';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredSites } from '@/app/lib/data';
 import Status from '../common/status';
@@ -49,6 +53,7 @@ export default async function SitesTable({
                     <p>{site.duration} Days</p>
                   </div>
                   <div className="flex justify-end gap-2">
+                    <ConsultSitesActivities id={site.id} />
                     {/* Receives the site id */}
                     <UpdateSite id={site.id} />
                     <DeleteSite id={site.id} />

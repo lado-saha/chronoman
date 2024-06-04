@@ -3,6 +3,8 @@ package com.minsih.chronoman.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.minsih.chronoman.model.Site;
 import com.minsih.chronoman.repository.SiteRepository;
 
@@ -10,9 +12,11 @@ import com.minsih.chronoman.repository.SiteRepository;
 public class SiteServiceImpl implements SiteService {
 
   private final SiteRepository siteRepository;
+  private final ActivityService activityService;
 
-  public SiteServiceImpl(SiteRepository siteRepository) {
+  public SiteServiceImpl(SiteRepository siteRepository, ActivityService activityService) {
     this.siteRepository = siteRepository;
+    this.activityService = activityService;
   }
 
   public Page<Site> search(String query, Pageable pageable) {
@@ -34,9 +38,12 @@ public class SiteServiceImpl implements SiteService {
     return siteRepository.findAll(pageable);
   }
 
+  @Transactional()
   @Override
   public Site save(Site site) {
-    return siteRepository.save(site);
+    Site newSite = siteRepository.save(site);
+    activityService.createFromDefaults(newSite);
+    return newSite;
   }
 
   @Override

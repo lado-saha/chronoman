@@ -1,6 +1,8 @@
 package com.minsih.chronoman.service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import com.minsih.chronoman.model.Activity;
 import com.minsih.chronoman.model.Task;
 
 public interface TaskService {
@@ -13,4 +15,8 @@ public interface TaskService {
   void deleteById(Long id);
 
   List<Task> findByActivityId(Long activityId);
+
+
+  @Transactional
+  List<Task> createFromDefaults(Activity activity);
 }

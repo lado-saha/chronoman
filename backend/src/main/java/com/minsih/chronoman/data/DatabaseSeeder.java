@@ -1,14 +1,16 @@
 package com.minsih.chronoman.data;
 
+// CSTE
 import org.springframework.boot.CommandLineRunner;
-// import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 
 import com.minsih.chronoman.model.PredefinedActivity;
 import com.minsih.chronoman.model.PredefinedTask;
 import com.minsih.chronoman.repository.PredefinedActivityRepository;
 import com.minsih.chronoman.repository.PredefinedTaskRepository;
+// Analyse et Programmation des reseaux informatique, (Configuration des modems, routers,Analyse de traffique, microtik, cisco et autre, gestion des bande passante)
 
-// @Component
+@Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final PredefinedActivityRepository predefinedActivityRepository;
