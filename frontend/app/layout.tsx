@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: '%s | Chronoman',
     default: 'Chronoman',
   },
-  description: 'For all construction projects planning and management.',
+  description: 'For all construction sites planning and management.',
   metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
 };
 

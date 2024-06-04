@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 import bcrypt from 'bcryptjs';
-import { Project, User } from './models';
+import { Site, User } from './models';
 
 const BASE_URL = process.env.API_BASE_URL;
 // We create a form schema taking into accoun the possible errors and warning
@@ -45,16 +45,19 @@ const UserCreationFormSchema = z.object({
   }),
 });
 
-const ProjectFormSchema = z.object({
+const SiteFormSchema = z.object({
+  id: z.number().optional(),
   name: z.string().max(255, 'Name must be at most 255 characters long.'),
+  town: z.string().max(255, 'Must be at most 255 characters long.'),
+  country: z.string().max(255, 'Must be at most 255 characters long.'),
+  region: z.string().max(255, 'Must be at most 255 characters long.'),
   description: z.string().optional(), // TEXT can be optional or empty
   startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: 'Invalid start date format. Use a valid date string.',
   }),
   budget: z.coerce
     .number()
-    .gt(0, { message: 'Please enter an amount greater than $0.' })
-    .optional(),
+    .gt(0, { message: 'Please enter an amount greater than $0.' }),
   duration: z.coerce
     .number()
     .gte(1, { message: 'Please enter a duration greater than 1.' }),
@@ -62,6 +65,14 @@ const ProjectFormSchema = z.object({
   stakeholders: z
     .string()
     .max(255, 'Stakeholders must be at most 255 characters long.'),
+  latitude: z.coerce
+    .number()
+    .gte(-180, { message: 'Latitude is between -180° to 180°' })
+    .lte(180, { message: 'Latitude is between -180° to 180°' }),
+  longitude: z.coerce
+    .number()
+    .gte(-180, { message: 'Longitude is between -90° to 90°' })
+    .lte(180, { message: 'Longitude is between -90° to 90°' }),
 });
 
 // This is temporary until @types/react-dom is updated
@@ -85,7 +96,7 @@ export type UserState = {
   message?: string | null;
 };
 
-export type ProjectState = {
+export type SiteState = {
   errors?: {
     name?: string[];
     id?: string[];
@@ -94,13 +105,18 @@ export type ProjectState = {
     status?: string[];
     email?: string[];
     stakeholders?: string[];
+    latitude?: string[];
+    longitude?: string[];
+    town?: string[];
+    country?: string[];
+    region?: string[];
   };
   message?: string | null;
 };
 
 // Validators
 const CreateUser = UserCreationFormSchema.omit({ id: true });
-const CreateProject = ProjectFormSchema;
+const CreateSite = SiteFormSchema.omit({ id: true });
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
@@ -268,12 +284,9 @@ export async function signupUser(prevState: UserState, formData: FormData) {
   redirect('/login');
 }
 
-export async function createProject(
-  prevState: ProjectState,
-  formData: FormData,
-) {
+export async function createSite(prevState: SiteState, formData: FormData) {
   // We create the user the we navigate to the login
-  const validatedFields = ProjectFormSchema.safeParse({
+  const validatedFields = SiteFormSchema.safeParse({
     name: formData.get('name'),
     description: formData.get('description'),
     startDate: formData.get('startDate'),
@@ -281,55 +294,60 @@ export async function createProject(
     status: formData.get('status'),
     budget: formData.get('budget'),
     stakeholders: formData.get('stakeholders'),
+    region: formData.get('region'),
+    country: formData.get('country'),
+    town: formData.get('town'),
+    latitude: formData.get('latitude'),
+    longitude: formData.get('longitude'),
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Project.',
+      message: 'Missing Fields. Failed to Site.',
     };
   }
 
-  const project: Project = {
-    id: 0, // or a proper id if available
+  const site: Site = {
+    id: 0,
+    // or a proper id if available
     ...validatedFields.data,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   };
 
-  console.log(project);
+  console.log(site);
 
   try {
-    const response = await fetch(`${BASE_URL}/projects`, {
+    const response = await fetch(`${BASE_URL}/sites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(project),
+      body: JSON.stringify(site),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create project');
+      throw new Error('Failed to create site');
     }
 
-    const createdProject = await response.json();
-    console.log(`project created:${createdProject} `);
+    const createdSite = await response.json();
+    console.log(`site created:${createdSite} `);
   } catch (error) {
     console.error(error);
-    return { message: 'Error creating project' };
+    return { message: 'Error creating site' };
   }
-  revalidatePath('/dashboard/projects');
+  revalidatePath('/dashboard/sites');
   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
-  redirect('/dashboard/projects');
+  redirect('/dashboard/sites');
 }
-export async function updateProject(
+export async function updateSite(
   id: number,
-  prevState: ProjectState,
+  prevState: SiteState,
   formData: FormData,
 ) {
   // We create the user the we navigate to the login
-  const validatedFields = ProjectFormSchema.safeParse({
+  const validatedFields = SiteFormSchema.safeParse({
     name: formData.get('name'),
     description: formData.get('description'),
     startDate: formData.get('startDate'),
@@ -337,8 +355,12 @@ export async function updateProject(
     status: formData.get('status'),
     budget: formData.get('budget'),
     stakeholders: formData.get('stakeholders'),
+    region: formData.get('region'),
+    country: formData.get('country'),
+    town: formData.get('town'),
+    latitude: formData.get('latitude'),
+    longitude: formData.get('longitude'),
   });
-
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -347,35 +369,52 @@ export async function updateProject(
     };
   }
 
-  const project: Project = {
-    id: 0, // or a proper id if available
+  const site: Site = {
+    id: 0,
     ...validatedFields.data,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   };
 
-  console.log(project);
+  console.log(site);
 
   try {
-    const response = await fetch(`${BASE_URL}/projects/${id}`, {
+    const response = await fetch(`${BASE_URL}/sites/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(project),
+      body: JSON.stringify(site),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update project');
+      throw new Error('Failed to update site');
     }
 
-    const createdProject = await response.json();
-    console.log(`project updated:${createdProject} `);
+    const createdSite = await response.json();
+    console.log(`site updated:${createdSite} `);
   } catch (error) {
     console.error(error);
-    return { message: 'Error updating project' };
+    return { message: 'Error updating site' };
   }
-  revalidatePath('/dashboard/projects');
+  revalidatePath('/dashboard/sites');
   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
-  redirect('/dashboard/projects');
+  redirect('/dashboard/sites');
+}
+
+export async function deleteSite(id: string) {
+  try {
+    const response = await fetch(`${BASE_URL}/sites/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete site');
+    }
+    console.log(`Successful Deletion `);
+ revalidatePath('/dashboard/sites');
+//   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
+  } catch (error) {
+    console.error(error);
+    return { message: 'Error deleting site' };
+  }
+ 
 }

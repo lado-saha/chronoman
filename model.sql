@@ -1,106 +1,60 @@
--- 1- Project
-CREATE TABLE projects (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    start_date DATE NOT NULL,
-    end_date DATE,
-    status VARCHAR(50) NOT NULL,
-    budget DECIMAL(15, 2),
-    status VARCHAR(50) NOT NULL,                      -- Current status of the construction site (e.g., Planned, Ongoing, Completed)
-    stakeholders VARCHAR(255), -- A list of stakeholders 
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
 
--- 2- User
-CREATE TABLE users (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(255),
-    role VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    last_login TIMESTAMP
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site A', '2024-01-01', 120, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1000000.00, 'Stakeholder A', 40.7128, -74.0060, 'New York', 'USA', 'NY', 'Construction of a commercial building.');
 
---4- Location
--- Create the 'locations' table
-CREATE TABLE locations (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,  -- Unique identifier for each location
-    name VARCHAR(255) NOT NULL,            -- Name of the location
-    latitude DECIMAL(10, 8) NOT NULL,      -- Latitude of the location
-    longitude DECIMAL(11, 8) NOT NULL,     -- Longitude of the location
-    region VARCHAR(255) NOT NULL,          -- Region of the location
-    town VARCHAR(255) NOT NULL,            -- Town of the location
-    country VARCHAR(255) NOT NULL,         -- Country of the location
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site B', '2024-02-15', 90, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 750000.00, 'Stakeholder B', 34.0522, -118.2437, 'Los Angeles', 'USA', 'CA', 'Renovation of an office space.');
 
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site C', '2024-03-10', 180, 'Completed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1500000.00, 'Stakeholder C', 51.5074, -0.1278, 'London', 'UK', 'London', 'Construction of a residential building.');
 
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site D', '2024-04-05', 60, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 500000.00, 'Stakeholder D', 35.6895, 139.6917, 'Tokyo', 'Japan', 'Tokyo', 'Construction of a retail store.');
 
--- 3- Site 
--- Create the 'sites' table
-CREATE TABLE sites (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,             -- Unique identifier for each construction site
-    project_id BIGINT NOT NULL,                       -- Identifier of the associated project
-    location_id BIGINT NOT NULL,                      -- Identifier of the associated location
-    name VARCHAR(255) NOT NULL,                       -- Name of the construction site
-    start_date DATE NOT NULL,                         -- Start date of the site operations
-    estimation_duration INT NOT NULL,                 -- Estimated duration of the site operations in days
-    status VARCHAR(50) NOT NULL,                      -- Current status of the construction site (e.g., Planned, Ongoing, Completed)
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,          -- Timestamp of when the site record was created
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  -- Timestamp of the last update to the site record
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site E', '2024-05-20', 150, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1250000.00, 'Stakeholder E', -33.8688, 151.2093, 'Sydney', 'Australia', 'NSW', 'Renovation of a hotel.');
 
-    FOREIGN KEY (project_id) REFERENCES projects(id), -- Foreign key reference to the 'projects' table
-    FOREIGN KEY (location_id) REFERENCES locations(id) -- Foreign key reference to the 'locations' table
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site F', '2024-06-15', 200, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2000000.00, 'Stakeholder F', 48.8566, 2.3522, 'Paris', 'France', 'Île-de-France', 'Construction of a mixed-use development.');
 
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site G', '2024-07-01', 100, 'Completed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 850000.00, 'Stakeholder G', 41.9028, 12.4964, 'Rome', 'Italy', 'Lazio', 'Renovation of a museum.');
 
--- Create the 'predefined_activities' table
-CREATE TABLE predefined_activities (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,   -- Unique identifier for each predefined activity
-    name VARCHAR(255) NOT NULL,             -- Name of the predefined activity
-    description TEXT                        -- Description of the predefined activity
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site H', '2024-08-25', 75, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 600000.00, 'Stakeholder H', 55.7558, 37.6173, 'Moscow', 'Russia', 'Moscow', 'Construction of an apartment complex.');
 
--- Create the 'predefined_tasks' table
-CREATE TABLE predefined_tasks (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,   -- Unique identifier for each predefined task
-    activity_id BIGINT NOT NULL,            -- Identifier of the associated predefined activity
-    name VARCHAR(255) NOT NULL,             -- Name of the predefined task
-    description TEXT,                       -- Description of the predefined task
-    FOREIGN KEY (activity_id) REFERENCES predefined_activities(id) -- Foreign key reference to the 'predefined_activities' table
-);
--- Create the 'activities' table
-CREATE TABLE activities (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,                    -- Unique identifier for each activity
-    predefined_activity_id BIGINT NOT NULL,                  -- Identifier of the associated predefined activity
-    site_id BIGINT NOT NULL,                                 -- Identifier of the associated construction site
-    status VARCHAR(50) NOT NULL,                             -- Current status of the activity
-    duration INT NOT NULL,                                   -- Duration of the activity in days
-    comment TEXT,                                            -- Comment for the activity
-    start_date DATE NOT NULL,                                -- Start date of the activity
-    real_end_date DATE,                                     -- Real end date of the activity
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the activity record was created
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of the last update to the activity record
-    FOREIGN KEY (predefined_activity_id) REFERENCES predefined_activities(id), -- Foreign key reference to the 'predefined_activities' table
-    FOREIGN KEY (site_id) REFERENCES sites(id)               -- Foreign key reference to the 'sites' table
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site I', '2024-09-30', 130, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 950000.00, 'Stakeholder I', 52.5200, 13.4050, 'Berlin', 'Germany', 'Berlin', 'Renovation of a historic building.');
 
--- Create the 'tasks' table
-CREATE TABLE tasks (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,                    -- Unique identifier for each task
-    activity_id BIGINT NOT NULL,                             -- Identifier of the associated activity
-    predefined_task_id BIGINT NOT NULL,                       -- Identifier of the associated predefined task
-    status VARCHAR(50) NOT NULL,                             -- Current status of the task
-    duration INT NOT NULL,                                   -- Duration of the task in days
-    comment TEXT,                                            -- Comment for the task
-    start_date DATE NOT NULL,                                -- Start date of the task
-    real_end_date DATE,                                     -- Real end date of the task
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the task record was created
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of the last update to the task record
-    FOREIGN KEY (activity_id) REFERENCES activities(id),     -- Foreign key reference to the 'activities' table
-    FOREIGN KEY (predefined_task_id) REFERENCES predefined_tasks(id) -- Foreign key reference to the 'predefined_tasks' table
-);
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site J', '2024-10-15', 110, 'Completed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 700000.00, 'Stakeholder J', 39.9042, 116.4074, 'Beijing', 'China', 'Beijing', 'Construction of a sports facility.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site K', '2024-11-20', 140, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1300000.00, 'Stakeholder K', 37.7749, -122.4194, 'San Francisco', 'USA', 'CA', 'Renovation of a community center.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site L', '2024-12-01', 90, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 780000.00, 'Stakeholder L', 28.6139, 77.2090, 'New Delhi', 'India', 'Delhi', 'Construction of a corporate office.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site M', '2024-01-10', 160, 'Completed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1100000.00, 'Stakeholder M', -26.2041, 28.0473, 'Johannesburg', 'South Africa', 'Gauteng', 'Construction of a university campus.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site N', '2024-02-28', 120, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 900000.00, 'Stakeholder N', -34.6037, -58.3816, 'Buenos Aires', 'Argentina', 'Buenos Aires', 'Renovation of a theater.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site O', '2024-03-15', 100, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 650000.00, 'Stakeholder O', 22.3964, 114.1095, 'Hong Kong', 'China', 'Hong Kong', 'Construction of a shopping mall.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site P', '2024-04-30', 180, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1500000.00, 'Stakeholder P', 19.4326, -99.1332, 'Mexico City', 'Mexico', 'CDMX', 'Construction of a cultural center.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site Q', '2024-05-20', 130, 'Completed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1150000.00, 'Stakeholder Q', 35.6762, 139.6503, 'Tokyo', 'Japan', 'Tokyo', 'Renovation of a government building.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site R', '2024-06-10', 70, 'Planned', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 450000.00, 'Stakeholder R', 55.9533, -3.1883, 'Edinburgh', 'UK', 'Scotland', 'Construction of a library.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site S', '2024-07-25', 85, 'Ongoing', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 500000.00, 'Stakeholder S', 40.4168, -3.7038, 'Madrid', 'Spain', 'Madrid', 'Renovation of a hospital.');
+
+INSERT INTO sites (name, start_date, duration, status, created_at, updated_at, budget, stakeholders, latitude, longitude, town, country, region, description) 
+VALUES ('Site T', '2024-08-30', 110

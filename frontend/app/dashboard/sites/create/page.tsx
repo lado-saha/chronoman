@@ -1,4 +1,4 @@
-import Form from '@/app/ui/projects/create-form';
+import Form from '@/app/ui/sites/create-form';
 import Breadcrumbs from '@/app/ui/common/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 
@@ -7,13 +7,13 @@ export default async function Page() {
 
   return (
     <main>
-      {/* The breadcrumps helps the user see his current location. projects/Create Invoice  */}
+      {/* The breadcrumps helps the user see his current location. sites/Create Invoice  */}
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Projects', href: '/dashboard/projects' },
+          { label: 'Construction Sites', href: '/dashboard/sites' },
           {
-            label: 'Create Project',
-            href: '/dashboard/project/create',
+            label: 'Create Construction Site',
+            href: '/dashboard/sites/create',
             active: true,
           },
         ]}

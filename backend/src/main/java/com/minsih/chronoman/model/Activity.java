@@ -46,7 +46,6 @@ public class Activity {
 
   private Date realEndDate;
 
- 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;

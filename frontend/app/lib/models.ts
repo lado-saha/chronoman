@@ -1,43 +1,23 @@
 // models.ts
 
-// Type alias for Project
-export type Project = {
-  id: number;
-  name: string;
-  description?: string;
-  startDate: string; // Use string for dates to easily parse them with Date constructor
-  duration: number,
-  status: string;
-  budget?: number;
-  stakeholders?: string;
-  createdAt: string;
-  updatedAt: string;
-};
+// Type alias for site
 
-// Type alias for Location
-export type Location = {
+export type Site = {
   id: number;
   name: string;
+  startDate: string;
+  status: string;
+  createdAt?: string;
+  updatedAt?: string;
+  description?: string;
+  duration: number;
+  stakeholders?: string;
+  budget: number;
   latitude: number;
   longitude: number;
   region: string;
   town: string;
   country: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-// Type alias for Site
-export type Site = {
-  id: number;
-  projectId: number;
-  locationId: number;
-  name: string;
-  startDate: string;
-  estimationDuration: number;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
 // Type alias for PredefinedActivity

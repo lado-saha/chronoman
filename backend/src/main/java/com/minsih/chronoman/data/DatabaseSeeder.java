@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 
 import com.minsih.chronoman.model.PredefinedActivity;
 import com.minsih.chronoman.model.PredefinedTask;
-import com.minsih.chronoman.repository.LocationRepository;
 import com.minsih.chronoman.repository.PredefinedActivityRepository;
 import com.minsih.chronoman.repository.PredefinedTaskRepository;
 
@@ -16,7 +15,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final PredefinedTaskRepository predefinedTaskRepository;
 
     public DatabaseSeeder(PredefinedActivityRepository predefinedActivityRepository,
-            PredefinedTaskRepository predefinedTaskRepository, LocationRepository locationRepository) {
+            PredefinedTaskRepository predefinedTaskRepository) {
         this.predefinedActivityRepository = predefinedActivityRepository;
         this.predefinedTaskRepository = predefinedTaskRepository;
     }

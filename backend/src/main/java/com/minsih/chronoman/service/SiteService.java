@@ -1,16 +1,23 @@
 package com.minsih.chronoman.service;
 
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.minsih.chronoman.model.Site;
 
 public interface SiteService {
   Site findById(Long id);
 
-  List<Site> findAll();
-
   Site save(Site site);
 
   void deleteById(Long id);
 
-  List<Site> findByProjectId(Long projectId);
+  Page<Site> findByName(String name, Pageable pageable);
+
+  Page<Site> findAll(Pageable pageable);
+
+  Page<Site> search(String query, Pageable pageable);
+
+  Long count();
 }

@@ -12,12 +12,12 @@ import {
 import { formatCurrency } from './utils';
 // Use this to avoid caching and thus enable dynamic rendering
 import { unstable_noStore as noStore } from 'next/cache';
-import { Project } from './models';
+import { Site } from './models';
 
 const BASE_URL = process.env.API_BASE_URL;
 
-export async function fetchProjects() {
-  const response = await fetch(`${BASE_URL}/projects`, {
+export async function fetchSites() {
+  const response = await fetch(`${BASE_URL}/sites`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -27,19 +27,19 @@ export async function fetchProjects() {
 
   try {
     if (!response.ok) {
-      throw new Error('Failed to fetch projects.' + response.statusText);
+      throw new Error('Failed to fetch sites.' + response.statusText);
     }
 
-    const projects: Project[] = await response.json();
-    return projects;
+    const sites: Site[] = await response.json();
+    return sites;
   } catch (error) {
-    throw new Error(`Failed to fetch project`);
+    throw new Error(`Failed to fetch site`);
   }
 }
 
-export async function fetchProjectById(id: number) {
+export async function fetchSiteById(id: number) {
   try {
-    const response = await fetch(`${BASE_URL}/projects/${id}`, {
+    const response = await fetch(`${BASE_URL}/sites/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -48,23 +48,23 @@ export async function fetchProjectById(id: number) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch project.');
+      throw new Error('Failed to fetch site.');
     }
 
-    const project: Project = await response.json();
-    return project;
+    const site: Site = await response.json();
+    return site;
   } catch (error) {
-    throw new Error(`Failed to fetch project: ${error}`);
+    throw new Error(`Failed to fetch site: ${error}`);
   }
 }
 
-export async function fetchFilteredProjects(
+export async function fetchFilteredSites(
   query: string,
   currentPage: number,
 ) {
   const size = ITEMS_PER_PAGE;
   const response = await fetch(
-    `${BASE_URL}/projects?name=${query}&page=${currentPage}&size=${size}`,
+    `${BASE_URL}/sites?name=${query}&page=${currentPage}&size=${size}`,
     {
       method: 'GET',
       headers: {
@@ -76,16 +76,16 @@ export async function fetchFilteredProjects(
 
   if (!response.ok) {
     console.log('Failed' + response.status);
-    // throw new Error('Failed to fetch project. {}' + response.json());
+    // throw new Error('Failed to fetch site. {}' + response.json());
   }
 
-  const projects: Project[] = await response.json();
-  console.log(projects);
-  return projects;
+  const sites: Site[] = await response.json();
+  console.log(sites);
+  return sites;
 }
 
-export async function fetchProjectsPages(query: string) {
-  const response = await fetch(`${BASE_URL}/projects/count`, {
+export async function fetchSitesPages(query: string) {
+  const response = await fetch(`${BASE_URL}/sites/count`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

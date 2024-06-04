@@ -1,13 +1,13 @@
 import Pagination from '@/app/ui/common/pagination';
 import Search from '@/app/ui/search';
-import Table from '@/app/ui/projects/table';
-import { CreateProject } from '@/app/ui/projects/buttons';
+import Table from '@/app/ui/sites/table';
+import { CreateSite } from '@/app/ui/sites/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { Metadata } from 'next';
-import { fetchProjectsPages } from '@/app/lib/data';
+import { fetchSitesPages } from '@/app/lib/data';
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: 'Sites',
 };
 export default async function Page({
   searchParams,
@@ -19,19 +19,19 @@ export default async function Page({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchProjectsPages(query);
+  const totalPages = await fetchSitesPages(query);
 
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Projects</h1>
+        <h1 className={`${lusitana.className} text-2xl`}>Sites</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search projects..." />
-        <CreateProject />
+        <Search placeholder="Search sites..." />
+        <CreateSite />
       </div>
 
-      {/* Shows the projects loading */}
+      {/* Shows the sites loading */}
       <Suspense key={query + currentPage}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>

@@ -8,6 +8,8 @@ package com.minsih.chronoman.model;
  */
 import lombok.Data;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,18 +19,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "sites")
 public class Site {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "project_id", nullable = false)
-  private Project project;
-
-  @ManyToOne
-  @JoinColumn(name = "location_id", nullable = false)
-  private Location location;
 
   @Column(nullable = false, length = 255)
   private String name;
@@ -37,7 +30,7 @@ public class Site {
   private Date startDate;
 
   @Column(nullable = false)
-  private int estimationDuration;
+  private int duration;
 
   @Column(nullable = false, length = 50)
   private String status;
@@ -50,5 +43,26 @@ public class Site {
   @UpdateTimestamp
   private Date updatedAt;
 
+  @Column(precision = 15, scale = 2)
+  private BigDecimal budget;
+
+  @Column(nullable = false, length = 255)
+  private String stakeholders;
+
+  @Column(nullable = false)
+  private Double latitude;
+
+  @Column(nullable = false)
+  private Double longitude;
+
+  @Column(nullable = false, length = 255)
+  private String town;
+
+  @Column(nullable = false, length = 255)
+  private String country;
+  @Column(nullable = false, length = 255)
+  private String region;
+  @Column(nullable = true)
+  private String description;
   // Constructors, getters, and setters
 }
