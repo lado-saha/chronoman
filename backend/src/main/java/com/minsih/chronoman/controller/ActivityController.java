@@ -1,6 +1,9 @@
 package com.minsih.chronoman.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +14,9 @@ import com.minsih.chronoman.service.ActivityService;
 @RequestMapping("/api/activities")
 public class ActivityController {
 
-    private final ActivityService activityService;
-
-    public ActivityController(ActivityService activityService) {
-        this.activityService = activityService;
-    }
+    @Autowired
+    @Lazy
+    private ActivityService activityService;
 
     @GetMapping
     public ResponseEntity<List<Activity>> getAllActivities() {
@@ -26,7 +27,8 @@ public class ActivityController {
     @GetMapping("/{id}")
     public ResponseEntity<Activity> getActivityById(@PathVariable Long id) {
         Activity activity = activityService.findById(id);
-        return activity != null ? new ResponseEntity<>(activity, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return activity != null ? new ResponseEntity<>(activity, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -40,6 +42,7 @@ public class ActivityController {
         Activity existingActivity = activityService.findById(id);
         if (existingActivity != null) {
             activity.setId(id);
+            activity.setOldDuration(existingActivity.getDuration());
             Activity updatedActivity = activityService.save(activity);
             return new ResponseEntity<>(updatedActivity, HttpStatus.OK);
         } else {

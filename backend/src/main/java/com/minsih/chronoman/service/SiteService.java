@@ -1,24 +1,55 @@
 package com.minsih.chronoman.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.minsih.chronoman.model.Site;
+import com.minsih.chronoman.repository.SiteRepository;
 
-public interface SiteService {
-  Site findById(Long id);
+@Service
+public class SiteService {
+
+  @Autowired
+  private SiteRepository siteRepository;
+  @Autowired
+  private ActivityService activityService;
+
+  public Page<Site> search(String query, Pageable pageable) {
+    return siteRepository.search(query, pageable);
+  }
+
+  public Site findById(Long id) {
+    return siteRepository.findById(id).orElse(null);
+  }
+
+  public Page<Site> findByName(String name, Pageable pageable) {
+    return siteRepository.findByNameIgnoreCase(name, pageable);
+  }
+
+  public Page<Site> findAll(Pageable pageable) {
+    return siteRepository.findAll(pageable);
+  }
 
   @Transactional()
-  Site save(Site site);
+  public Site create(Site site) {
+    Site newSite = siteRepository.save(site);
+    activityService.createFromDefaults(newSite);
+    return newSite;
+  }
 
-  void deleteById(Long id);
+  public Site save(Site site) {
+    return siteRepository.save(site);
+  }
 
-  Page<Site> findByName(String name, Pageable pageable);
+  public void deleteById(Long id) {
+    siteRepository.deleteById(id);
+  }
 
-  Page<Site> findAll(Pageable pageable);
+  public Long count() {
+    return siteRepository.count();
+  }
 
-  Page<Site> search(String query, Pageable pageable);
-
-  Long count();
 }

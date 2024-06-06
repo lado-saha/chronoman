@@ -21,4 +21,5 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
             "LOWER(s.region) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(s.country) LIKE LOWER(CONCAT('%', :query, '%'))")
     Page<Site> search(@Param("query") String query, Pageable pageable);
+
 }

@@ -13,10 +13,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.annotation.Lazy;
+
+import com.minsih.chronoman.ActivityEntityListener;
+
 import jakarta.persistence.*;;
 
 @Data
 @Entity
+// @EntityListeners(ActivityEntityListener.class)
 @Table(name = "activities")
 public class Activity {
 
@@ -33,11 +38,12 @@ public class Activity {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Site site;
 
-  @Column(nullable = false, length = 50)
-  private String status;
-
   @Column(nullable = false)
   private int duration;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  private ProjectStatus status = ProjectStatus.PLANNED;
 
   @Column(columnDefinition = "TEXT")
   private String comment;
@@ -45,6 +51,10 @@ public class Activity {
   @Column(nullable = true)
   @Temporal(TemporalType.TIMESTAMP)
   private Date realEndDate;
+
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date realStartDate;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -54,15 +64,22 @@ public class Activity {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
 
+  @Column(nullable = false)
+  private int totalTasksDuration;
+
+  /**
+   * A temporary field
+   */
+  @Column(nullable = true)
+  private int oldDuration;
+
   public Activity() {
   }
 
-  public Activity(PredefinedActivity predefinedActivity, Site site, String status, int duration,
+  public Activity(PredefinedActivity predefinedActivity, Site site,
       String comment) {
     this.predefinedActivity = predefinedActivity;
     this.site = site;
-    this.status = status;
-    this.duration = duration;
     this.comment = comment;
   }
   // Constructors, getters, and setters

@@ -1,5 +1,27 @@
 package com.minsih.chronoman.model;
 
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.minsih.chronoman.TaskEntityListener;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 /**
  * Represents a task in the construction management system.
  * Each task is associated with an activity and a predefined task.
@@ -7,29 +29,20 @@ package com.minsih.chronoman.model;
  * and timestamps for creation and last update.
  */
 import lombok.Data;
-import jakarta.persistence.*;
-import java.util.Date;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
 @Table(name = "tasks")
+// @EntityListeners(TaskEntityListener.class)
 public class Task {
 
   public Task() {
   }
 
-  public Task(Activity activity, PredefinedTask predefinedTask, String status, int duration, String comment,
-      Date realEndDate) {
+  public Task(Activity activity, PredefinedTask predefinedTask, String comment) {
     this.activity = activity;
     this.predefinedTask = predefinedTask;
-    this.status = status;
-    this.duration = duration;
     this.comment = comment;
-    this.realEndDate = realEndDate;
   }
 
   @Id
@@ -45,18 +58,15 @@ public class Task {
   @JoinColumn(name = "predefined_task_id", nullable = false)
   private PredefinedTask predefinedTask;
 
-  @Column(nullable = false, length = 50)
-  private String status;
-
   @Column(nullable = false)
   private int duration;
 
   @Column(columnDefinition = "TEXT")
   private String comment;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(nullable = true)
-  private Date realEndDate;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  private ProjectStatus status = ProjectStatus.PLANNED;
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
@@ -66,5 +76,15 @@ public class Task {
   @UpdateTimestamp
   private Date updatedAt;
 
+  @Column(nullable = true)
+  private int oldDuration;
+
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date realStartDate;
+
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date realEndDate;
   // Constructors, getters, and setters
 }

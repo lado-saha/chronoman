@@ -14,27 +14,36 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.*;;
+
+import com.minsih.chronoman.TaskEntityListener;
+
+import java.util.*;
 
 @Data
-@Entity
 @Table(name = "sites")
+@Entity
 public class Site {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  private ProjectStatus status = ProjectStatus.PLANNED;
+
   @Column(nullable = false, length = 255)
   private String name;
 
-  @Column(nullable = false)
-  private Date startDate;
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date realStartDate;
+
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date realEndDate;
 
   @Column(nullable = false)
   private int duration;
-
-  @Column(nullable = false, length = 50)
-  private String status;
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
@@ -66,5 +75,8 @@ public class Site {
   @Column(nullable = true)
   private String description;
   // Constructors, getters, and setters
+
+  @Column(nullable = false)
+  private int totalActivitiesDuration ;
 
 }

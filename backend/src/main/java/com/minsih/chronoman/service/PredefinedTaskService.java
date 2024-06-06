@@ -1,17 +1,41 @@
 package com.minsih.chronoman.service;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 import com.minsih.chronoman.model.PredefinedTask;
+import com.minsih.chronoman.repository.PredefinedTaskRepository;
 
-public interface PredefinedTaskService {
-    PredefinedTask findById(Long id);
-    
-    List<PredefinedTask> findAll();
-    
-    PredefinedTask save(PredefinedTask predefinedTask);
-    
-    void deleteById(Long id);
+@Service
+public class PredefinedTaskService  {
 
-    List<PredefinedTask> findByActivityId(Long activityId);
+  private final PredefinedTaskRepository predefinedTaskRepository;
 
+  public PredefinedTaskService(PredefinedTaskRepository predefinedTaskRepository) {
+    this.predefinedTaskRepository = predefinedTaskRepository;
+  }
+
+  
+  public PredefinedTask findById(Long id) {
+    return predefinedTaskRepository.findById(id).orElse(null);
+  }
+
+  
+  public List<PredefinedTask> findAll() {
+    return predefinedTaskRepository.findAll();
+  }
+
+  
+  public PredefinedTask save(PredefinedTask predefinedTask) {
+    return predefinedTaskRepository.save(predefinedTask);
+  }
+
+  
+  public void deleteById(Long id) {
+    predefinedTaskRepository.deleteById(id);
+  }
+
+  
+  public List<PredefinedTask> findByActivityId(Long activityId) {
+    return predefinedTaskRepository.findByActivityId(activityId);
+  }
 }

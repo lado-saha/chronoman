@@ -2,6 +2,7 @@ package com.minsih.chronoman.controller;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,10 @@ import com.minsih.chronoman.service.SiteService;
 @RequestMapping("/api/sites")
 public class SiteController {
 
+
     private final SiteService siteService;
 
-    public SiteController(SiteService siteService) {
+    public SiteController(@Lazy SiteService siteService) {
         this.siteService = siteService;
     }
 
@@ -63,9 +65,7 @@ public class SiteController {
 
     @PostMapping
     public ResponseEntity<Site> createSite(@RequestBody Site site) {
-        Site createdSite = siteService.save(site);
-        System.out.println(createdSite);
-
+        Site createdSite = siteService.create(site);
         return new ResponseEntity<>(createdSite, HttpStatus.CREATED);
     }
 

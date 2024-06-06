@@ -1,6 +1,9 @@
 package com.minsih.chronoman.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +14,10 @@ import com.minsih.chronoman.service.TaskService;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-  private final TaskService taskService;
+  @Autowired
+  @Lazy
+  private TaskService taskService;
 
-  public TaskController(TaskService taskService) {
-    this.taskService = taskService;
-  }
 
   @GetMapping
   public ResponseEntity<List<Task>> getAllTasks() {
@@ -40,6 +42,7 @@ public class TaskController {
     Task existingTask = taskService.findById(id);
     if (existingTask != null) {
       task.setId(id);
+      task.setOldDuration(existingTask.getDuration());
       Task updatedTask = taskService.save(task);
       return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     } else {

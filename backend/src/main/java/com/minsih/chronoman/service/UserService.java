@@ -1,16 +1,36 @@
 package com.minsih.chronoman.service;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 import com.minsih.chronoman.model.User;
+import com.minsih.chronoman.repository.UserRepository;
 
-public interface UserService {
-    User findById(String id);
+@Service
+public class UserService {
 
-    User findByEmail(String email);
+  private final UserRepository userRepository;
 
-    List<User> findAll();
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    User save(User user);
+  public User findById(String id) {
+    return userRepository.findById(id).orElse(null);
+  }
 
-    void deleteById(String id);
+  public List<User> findAll() {
+    return userRepository.findAll();
+  }
+
+  public User save(User user) {
+    return userRepository.save(user);
+  }
+
+  public void deleteById(String id) {
+    userRepository.deleteById(id);
+  }
+
+  public User findByEmail(String email) {
+    return userRepository.findByEmail(email);
+  }
 }
