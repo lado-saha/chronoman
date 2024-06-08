@@ -6,8 +6,11 @@ import {
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredSites } from '@/app/lib/data';
 import Status from '../common/status';
-import { toStatusModel } from '@/app/lib/models';
-import { HomeModernIcon } from '@heroicons/react/20/solid';
+import {
+  formatGeoString,
+  getStatusFromText as toStatusModel,
+} from '@/app/lib/models';
+import { HomeModernIcon, MapIcon, MapPinIcon } from '@heroicons/react/20/solid';
 
 export default async function SitesTable({
   query,
@@ -18,117 +21,44 @@ export default async function SitesTable({
 }) {
   const sites = await fetchFilteredSites(query, currentPage);
 
-  return (
-    <div className="mt-6 flow-root">
-      <div className="inline-block min-w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          <div className="md:hidden">
-            {sites?.map((site) => (
-              <div
-                key={site.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
-                <div className="flex items-center justify-between border-b pb-4">
-                  <div>
-                    <div className="mb-2 flex items-center">
-                      <HomeModernIcon
-                        // src={site.image_url}
-                        className="mr-2 rounded-full"
-                        width={28}
-                        height={28}
-                        // alt={`${site.name}'s profile picture`}
-                      />
-                      <p>{site.name}</p>
-                    </div>
-                  </div>
-                  <Status status={toStatusModel(site.status)} />
+ return (
+  <div className="mt-6 flow-root">
+    <div className="inline-block min-w-full align-middle">
+      <div className="rounded-lg bg-white  ">
+        {sites?.map((site) => (
+          <div key={site.id} className="mb-4 p-4 bg-gray-50 rounded-lg shadow-md overflow-hidden">
+            <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
+              <div className="flex items-center space-x-4">
+                <HomeModernIcon className="text-gray-500 w-10 h-10" />
+                <p className="text-xl font-semibold text-gray-800">{site.name}</p>
+              </div>
+              <Status status={site.status} />
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 w-full">
+                <div className="space-y-2 sm:space-y-0">
+                  <p className="text-sm text-gray-600">Started On: {formatDateToLocal(site.startDate)}</p>
+                  <p className="text-sm font-medium text-gray-800">Budget: {formatCurrency(site.budget)}</p>
+                  <p className="text-sm text-gray-600">Duration: <span className="font-medium text-gray-800">{site.duration} Days</span></p>
+                  <p className="text-sm text-gray-600">Completion Percentage: <span className="font-medium text-green-600">40%</span></p>
                 </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <div>
-                    <p className="text-xl font-medium">
-                      {formatDateToLocal(site.startDate)}
-                    </p>
-                    <p> {formatCurrency(site.budget)}</p>
-                    {/* <p>{formatDateToLocal(site.startDate)}</p> */}
-                    <p>{site.duration} Days</p>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <ConsultSitesActivities id={site.id} />
-                    {/* Receives the site id */}
-                    <UpdateSite id={site.id} />
-                    <DeleteSite id={site.id} />
-                  </div>
+                <div className="flex items-center mt-4 sm:mt-0">
+                  <MapPinIcon className="text-gray-500 w-6 h-6 mr-2" />
+                  <p className="text-sm text-gray-700 italic">{formatGeoString(site)}</p>
                 </div>
               </div>
-            ))}
+              <div className="mt-4 sm:mt-0 flex space-x-2">
+                <ConsultSitesActivities id={site.id} />
+                <UpdateSite id={site.id} />
+                <DeleteSite id={site.id} />
+              </div>
+            </div>
           </div>
-          <table className="hidden min-w-full text-gray-900 md:table">
-            <thead className="rounded-lg text-left text-sm font-normal">
-              <tr>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Site Name
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Budget
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Start Date
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Siteed Duration
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Status
-                </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {sites?.map((site) => (
-                <tr
-                  key={site.id}
-                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
-                >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex items-center gap-3">
-                      <HomeModernIcon
-                        // src={site.image_url}
-                        className="rounded-full"
-                        width={28}
-                        height={28}
-                        // alt={`${site.name}'s profile picture`}
-                      />
-                      <p>{site.name}</p>
-                    </div>
-                  </td>
-
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(site.budget)}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(site.startDate)}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {site.duration} Days
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    <Status status={toStatusModel(site.status)} />
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
-                      <ConsultSitesActivities id={site.id} />
-                      <UpdateSite id={site.id} />
-                      <DeleteSite id={site.id} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        ))}
       </div>
     </div>
-  );
+  </div>
+);
+
 }

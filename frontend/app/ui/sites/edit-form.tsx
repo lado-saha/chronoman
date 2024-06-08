@@ -9,14 +9,14 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { useFormState } from 'react-dom';
-import { Site } from '@/app/lib/models';
+import { Site, getStatusText, statusOptions } from '@/app/lib/models';
 import { updateSite } from '@/app/lib/actions';
 
 export default function EditSiteForm({ site }: { site: Site }) {
   // This will automatically bind the id to the path
-  const updateSiteWithId = updateSite.bind(null, site.id);
+  const updateSiteWithId = updateSite.bind(null, site.id, site);
 
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: '', errors: {} };
   const [state, dispatch] = useFormState(updateSiteWithId, initialState);
 
   /*This cannot work: <form action={updateSite(id)}></form> */
@@ -212,71 +212,36 @@ export default function EditSiteForm({ site }: { site: Site }) {
         </div>
       </div>
 
-      {/* Site Status */}
-      <fieldset>
+      <fieldset disabled>
         <legend className="mb-2 block text-sm font-medium">
-          Set the site status
+          Current Site Status
         </legend>
         <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
           <div className="flex gap-4">
-            <div className="flex items-center">
-              <input
-                id="planned"
-                name="status"
-                type="radio"
-                value="planned"
-                defaultChecked={site.status.toLocaleLowerCase() === 'planned'}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-              />
-              <label
-                htmlFor="planned"
-                className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-              >
-                Planned <CalendarDaysIcon className="h-4 w-4" />
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                id="ongoing"
-                name="status"
-                type="radio"
-                value="ongoing"
-                defaultChecked={site.status.toLocaleLowerCase() === 'ongoing'}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-              />
-              <label
-                htmlFor="ongoing"
-                className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-blue-500 px-3 py-1.5 text-xs font-medium text-white"
-              >
-                Ongoing
-                <ClockIcon className="h-4 w-4" />
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                id="completed"
-                name="status"
-                type="radio"
-                value="completed"
-                defaultChecked={site.status.toLocaleLowerCase() === 'completed'}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-              />
-              <label
-                htmlFor="completed"
-                className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
-              >
-                Completed
-                <CheckIcon className="h-4 w-4" />
-              </label>
-            </div>
-          </div>
-          {/* Only show when there's an error with the status field */}
-          <div id="status-error" aria-live="polite" aria-atomic="true">
-            {state?.errors?.status?.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-              </p>
-            ))}
+            {statusOptions.map(({ value, color, icon }) => {
+              const IconComponent = icon;
+
+              return (
+                <div key={value} className="flex items-center">
+                  <input
+                    disabled
+                    id={getStatusText(value)}
+                    name="status"
+                    type="radio"
+                    // value={value}
+                    checked={value === site.status}
+                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                  />
+                  <label
+                    htmlFor={getStatusText(value)}
+                    className={`ml-2 flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white ${color}`}
+                  >
+                    {getStatusText(value)}
+                    <IconComponent className="h-4 w-4" />
+                  </label>
+                </div>
+              );
+            })}
           </div>
         </div>
       </fieldset>

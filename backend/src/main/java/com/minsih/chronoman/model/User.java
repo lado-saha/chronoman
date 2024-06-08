@@ -52,11 +52,5 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   private Date lastLogin;
 
-  // // Hash password before saving to the database
-  // public void setPassword(String password) {
-  // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-  // this.password = passwordEncoder.encode(password);
-  // }
-
   // Constructors, getters, and setters
 }

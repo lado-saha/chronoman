@@ -25,11 +25,15 @@ import com.minsih.chronoman.service.SiteService;
 @RequestMapping("/api/sites")
 public class SiteController {
 
-
     private final SiteService siteService;
 
     public SiteController(@Lazy SiteService siteService) {
         this.siteService = siteService;
+    }
+
+    @GetMapping("/ids")
+    public List<Long> getAllSiteIds() {
+        return siteService.findAllSiteIds();
     }
 
     /*

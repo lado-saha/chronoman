@@ -1,3 +1,4 @@
+'use server'
 // The place where we load all the data
 import { sql } from '@vercel/postgres';
 import {

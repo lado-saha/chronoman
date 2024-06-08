@@ -1,5 +1,7 @@
 package com.minsih.chronoman.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ public class SiteService {
   private ActivityService activityService;
 
   public Page<Site> search(String query, Pageable pageable) {
+    // new Site().getUser();
     return siteRepository.search(query, pageable);
   }
 
@@ -50,6 +53,10 @@ public class SiteService {
 
   public Long count() {
     return siteRepository.count();
+  }
+
+  public List<Long> findAllSiteIds() {
+    return siteRepository.findAllSiteIds();
   }
 
 }

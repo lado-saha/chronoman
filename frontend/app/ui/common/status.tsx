@@ -1,41 +1,28 @@
-import { StatusModel } from '@/app/lib/models';
-import {
-  CalendarDaysIcon,
-  CheckIcon,
-  ClockIcon,
-} from '@heroicons/react/24/outline';
+import React from 'react';
 import clsx from 'clsx';
+import { StatusModel, getStatusText, statusOptions } from '@/app/lib/models';
 
 export default function Status({ status }: { status: StatusModel }) {
+  // console.log(status)
+  const statusOption = statusOptions.find((option) => option.value === status);
+
+  if (!statusOption) {
+    console.log('Not found');
+    return null; // or handle unknown status
+  }
+
+  const { value, color, icon: IconComponent } = statusOption;
+
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-full px-2 py-1 text-xs',
-        {
-          'bg-gray-100 text-gray-500': status === StatusModel.Planned,
-          'bg-yellow-500 text-gray-500': status === StatusModel.Ongoing,
-          'bg-green-500 text-white': status === StatusModel.Completed,
-        },
+        ' inline-flex cursor-pointer items-center  rounded-full px-3 py-1.5 text-xs font-medium text-white',
+        color,
       )}
     >
-      {status === StatusModel.Planned ? (
-        <>
-          Planned
-          <CalendarDaysIcon className="ml-1 w-4 text-gray-500" />
-        </>
-      ) : null}
-      {status === StatusModel.Ongoing ? (
-        <>
-          Ongoing
-          <ClockIcon className="ml-1 w-4 text-gray-500" />
-        </>
-      ) : null}
-      {status === StatusModel.Completed ? (
-        <>
-          Completed
-          <CheckIcon className="ml-1 w-4 text-white" />
-        </>
-      ) : null}
+      {getStatusText(value)}
+
+      <IconComponent className="ml-3 h-4 w-4" />
     </span>
   );
 }

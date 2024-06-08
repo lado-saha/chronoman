@@ -10,7 +10,7 @@ export default async function Page() {
       {/* The breadcrumps helps the user see his current location. sites/Create Invoice  */}
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Construction Sites', href: '/dashboard/sites' },
+          { label: 'Sites', href: '/dashboard/sites' },
           {
             label: 'Create Construction Site',
             href: '/dashboard/sites/create',

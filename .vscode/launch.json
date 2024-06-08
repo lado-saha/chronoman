@@ -2,6 +2,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "org.example.Main",
+      "projectName": "untitled"
+    },
+    {
+      "type": "java",
       "name": "Spring Boot-ChronomanApplication<backend>",
       "request": "launch",
       "cwd": "${workspaceFolder}",

@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.minsih.chronoman.TaskEntityListener;
@@ -26,6 +28,10 @@ public class Site {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  // @ManyToOne(targetEntity = User.class)
+  // @JoinColumn(name = "user_id", nullable = false)
+  // private User user;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -77,6 +83,6 @@ public class Site {
   // Constructors, getters, and setters
 
   @Column(nullable = false)
-  private int totalActivitiesDuration ;
+  private int totalActivitiesDuration;
 
 }

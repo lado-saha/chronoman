@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 import bcrypt from 'bcryptjs';
-import { Site, User } from './models';
+import { Site, StatusModel, User } from './models';
 
 const BASE_URL = process.env.API_BASE_URL;
 // We create a form schema taking into accoun the possible errors and warning
@@ -61,7 +61,6 @@ const SiteFormSchema = z.object({
   duration: z.coerce
     .number()
     .gte(1, { message: 'Please enter a duration greater than 1.' }),
-  status: z.string().max(50, 'Status must be at most 50 characters long.'),
   stakeholders: z
     .string()
     .max(255, 'Stakeholders must be at most 255 characters long.'),
@@ -103,10 +102,10 @@ export type SiteState = {
     startDate?: string[];
     duration?: string[];
     status?: string[];
-    email?: string[];
     stakeholders?: string[];
     latitude?: string[];
     longitude?: string[];
+    budget?: string[];
     town?: string[];
     country?: string[];
     region?: string[];
@@ -221,10 +220,7 @@ export async function signinUser(
         default:
           return 'Something went wrong. User may not exist';
       }
-    } else {
-      console.log(error);
     }
-    throw error;
   }
   revalidatePath('/login');
   redirect('/dashboard');
@@ -314,6 +310,8 @@ export async function createSite(prevState: SiteState, formData: FormData) {
     id: 0,
     // or a proper id if available
     ...validatedFields.data,
+    totalActivityDuration: 0,
+    status: StatusModel.PLANNED,
   };
 
   console.log(site);
@@ -343,6 +341,8 @@ export async function createSite(prevState: SiteState, formData: FormData) {
 }
 export async function updateSite(
   id: number,
+
+  oldSite: Site,
   prevState: SiteState,
   formData: FormData,
 ) {
@@ -372,6 +372,8 @@ export async function updateSite(
   const site: Site = {
     id: 0,
     ...validatedFields.data,
+    totalActivityDuration: oldSite.totalActivityDuration,
+    status: oldSite.status,
   };
 
   console.log(site);
@@ -410,11 +412,10 @@ export async function deleteSite(id: string) {
       throw new Error('Failed to delete site');
     }
     console.log(`Successful Deletion `);
- revalidatePath('/dashboard/sites');
-//   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
+    revalidatePath('/dashboard/sites');
+    //   // Note that redirect throws an error inorder to function and so we shoulnot use it inside a try catch block
   } catch (error) {
     console.error(error);
     return { message: 'Error deleting site' };
   }
- 
 }

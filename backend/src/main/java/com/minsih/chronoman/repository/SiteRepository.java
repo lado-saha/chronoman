@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.*;
 
 import com.minsih.chronoman.model.Site;
 
@@ -21,5 +22,8 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
             "LOWER(s.region) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(s.country) LIKE LOWER(CONCAT('%', :query, '%'))")
     Page<Site> search(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT s.id FROM Site s")
+    List<Long> findAllSiteIds();
 
 }

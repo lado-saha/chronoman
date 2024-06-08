@@ -1,6 +1,5 @@
 'use client';
 
-import { lusitana } from '@/app/ui/fonts';
 import {
   AtSymbolIcon,
   KeyIcon,
@@ -21,14 +20,14 @@ import { useFormState, useFormStatus } from 'react-dom';
 
 export default function SignupForm() {
   // Must have the message and errors fields
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: '', errors: {} };
   // This is to handle and show errors while filling the form
   const [state, dispatch] = useFormState(signupUser, initialState);
 
   return (
     <form action={dispatch} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-        <h1 className={`${lusitana.className} mb-3 text-center text-2xl`}>
+        <h1 className={`mb-3 text-center text-2xl`}>
           Welcome! Tell us more about yourself first.
         </h1>
         <div className="w-full">
@@ -175,7 +174,7 @@ function LoginButton() {
         'mt-2 flex h-[48px] grow items-center  justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium text-blue-600 hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 ',
       )}
     >
-      <p className="w-full md:block">Create a new account instead.</p>
+      <p className="w-full md:block">Login instead.</p>
       <ArrowRightOnRectangleIcon className="w-6" />
     </Link>
   );

@@ -1,5 +1,5 @@
 import Form from '@/app/ui/sites/edit-form';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/common/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { fetchSiteById } from '@/app/lib/data';
 

@@ -24,7 +24,8 @@ export function ConsultSitesActivities({ id }: { id: number }) {
   return (
     <Link
       href={`/dashboard/sites/${id}/activities`}
-      className="flex h-10 items-center rounded-lg bg-blue-600 px-2 text-md font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+      className="flex h-10 items-center rounded-lg border px-2 text-md font-medium hover:bg-gray-100"
+
     >
       <span className="hidden md:block">Activities</span>{' '}
       <ArrowTopRightOnSquareIcon className="h-5 md:ml-2" />
